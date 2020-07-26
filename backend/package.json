@@ -1,0 +1,22 @@
+{
+  "name": "backend-biblioteca-gcs",
+  "version": "1.0.0",
+  "description": "Backend para la aplicación de biblioteca que requiere el grupo de Aldrin Cuvi para la materia de Gestión de la Calidad del Software.",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon ./app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jesús Moreira (jesusromc8@gmail.com)",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "sequelize": "^6.3.3",
+    "tedious": "^8.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
