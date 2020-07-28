@@ -4,6 +4,7 @@ import SearchForm from "./components/Search/SearchForm";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import CardList from "./components/CardList/CardList";
+import { Typography } from "@material-ui/core";
 
 const useStyle = makeStyles((theme) => ({
   container: {
@@ -18,9 +19,11 @@ const api = "https://api-biblioteca-gcs.herokuapp.com/books/";
 
 function App() {
   const classes = useStyle();
+  const [search, setSearch] = useState(false);
   const [books, setBooks] = useState([]);
 
-  const getBooks = async (values) => {
+  const getBooks = async (values, setDisableButton) => {
+    setSearch(false);
     const api_url = `${api}${values.searchCriteria}/${values.searchValue}`;
 
     const api_call = await fetch(api_url, {
@@ -31,10 +34,16 @@ function App() {
 
     if (data.status === "ok" && values.searchCriteria === "isbn") {
       setBooks([data.book]);
+      setSearch(true);
+      setDisableButton(false);
     } else if (data.status === "ok") {
       setBooks(data.books);
+      setSearch(true);
+      setDisableButton(false);
     } else {
       setBooks([]);
+      setSearch(true);
+      setDisableButton(false);
     }
   };
   return (
@@ -60,19 +69,32 @@ function App() {
           wrap="wrap"
           spacing={4}
         >
-          {books.map((book) => (
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              md={4}
-              lg={3}
-              xl={3}
-              key={book.isbn_libro}
-            >
-              <CardList book={book} />
+          {search && books.length > 0 ? (
+            books.map((book) => (
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                xl={3}
+                key={book.isbn_libro}
+              >
+                <CardList book={book} />
+              </Grid>
+            ))
+          ) : search ? (
+            <Grid item xs={12} sm={6} md={4} lg={3} xl={3}>
+              <Typography
+                variant="h5"
+                component="h2"
+                gutterBottom
+                align="center"
+              >
+                No se encontraron resultados
+              </Typography>
             </Grid>
-          ))}
+          ) : null}
         </Grid>
       </div>
     </div>

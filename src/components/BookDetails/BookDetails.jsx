@@ -7,10 +7,17 @@ import {
   Paper,
   Button,
   Snackbar,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Slide,
 } from "@material-ui/core";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import Alert from "@material-ui/lab/Alert";
+import { Link } from "react-router-dom";
 
 const useStyle = makeStyles((theme) => ({
   parentContainer: {
@@ -42,13 +49,22 @@ const useStyle = makeStyles((theme) => ({
   margin: {
     marginTop: theme.spacing(2),
   },
+  links: {
+    textDecoration: "none",
+    color: "inherit",
+  },
 }));
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const api = "https://api-biblioteca-gcs.herokuapp.com/books/";
 
 const BookDetails = ({ book, history }) => {
   const classes = useStyle();
   const [openSucess, setOpenSuccess] = React.useState(false);
+  const [openDialog, setOpenDialog] = React.useState(false);
   const [disableButton, setDisableButton] = React.useState(false);
   const {
     isbn_libro,
@@ -65,6 +81,7 @@ const BookDetails = ({ book, history }) => {
 
   const deleteBook = async () => {
     setDisableButton(true);
+    setOpenDialog(false);
 
     const api_call = await fetch(`${api}${isbn_libro}`, {
       method: "DELETE",
@@ -91,6 +108,14 @@ const BookDetails = ({ book, history }) => {
     }
 
     setOpenSuccess(false);
+  };
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
   return (
     <div className={classes.parentContainer}>
@@ -216,24 +241,59 @@ const BookDetails = ({ book, history }) => {
               direction="row"
               className={classes.margin}
             >
-              <Button
-                variant="contained"
-                size="small"
-                className={classes.updateButton}
-                startIcon={<EditOutlinedIcon />}
+              <Link
+                to={{
+                  pathname: `/books/modify/${isbn_libro}`,
+                  state: { book },
+                }}
+                className={classes.links}
               >
-                Modificar
-              </Button>
+                <Button
+                  variant="contained"
+                  size="small"
+                  disabled={disableButton}
+                  className={classes.updateButton}
+                  startIcon={<EditOutlinedIcon />}
+                >
+                  Modificar
+                </Button>
+              </Link>
               <Button
                 variant="contained"
                 size="small"
                 disabled={disableButton}
-                onClick={deleteBook}
+                onClick={handleOpenDialog}
                 className={classes.deleteButton}
                 startIcon={<DeleteOutlinedIcon />}
               >
                 Eliminar
               </Button>
+              <Dialog
+                open={openDialog}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleCloseDialog}
+                aria-labelledby="alert-dialog-slide-title"
+                aria-describedby="alert-dialog-slide-description"
+              >
+                <DialogTitle id="alert-dialog-slide-title">
+                  {"¿Está seguro de eliminar el libro?"}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-slide-description">
+                    Una vez eliminado el libro, este proceso no se podrá
+                    revertir.
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCloseDialog} color="primary">
+                    Rechazar
+                  </Button>
+                  <Button onClick={deleteBook} color="secondary">
+                    Eliminar
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </Grid>
           </Grid>
         </Grid>

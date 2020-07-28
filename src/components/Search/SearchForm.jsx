@@ -21,6 +21,7 @@ const useStyle = makeStyles((theme) => ({
 
 const SearchForm = ({ getBooks }) => {
   const classes = useStyle();
+  const [disableButton, setDisableButton] = React.useState(false);
   const [error, setError] = React.useState({
     isError: false,
     msg: "",
@@ -60,7 +61,8 @@ const SearchForm = ({ getBooks }) => {
         isError: false,
         msg: "",
       });
-      getBooks(formValues);
+      setDisableButton(true);
+      getBooks(formValues, setDisableButton);
     }
   };
 
@@ -115,6 +117,7 @@ const SearchForm = ({ getBooks }) => {
               variant="contained"
               color="secondary"
               type="submit"
+              disabled={disableButton}
               className={classes.separator}
             >
               Buscar

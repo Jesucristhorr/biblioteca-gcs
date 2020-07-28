@@ -78,14 +78,19 @@ const CardList = ({ book }) => {
       </Link>
       <CardActions>
         <Grid container justify="space-evenly">
-          <Button
-            variant="contained"
-            size="small"
-            className={classes.updateButton}
-            startIcon={<EditOutlinedIcon />}
+          <Link
+            to={{ pathname: `/books/modify/${isbn_libro}`, state: { book } }}
+            className={classes.links}
           >
-            Modificar
-          </Button>
+            <Button
+              variant="contained"
+              size="small"
+              className={classes.updateButton}
+              startIcon={<EditOutlinedIcon />}
+            >
+              Modificar
+            </Button>
+          </Link>
         </Grid>
       </CardActions>
     </Card>

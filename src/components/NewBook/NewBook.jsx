@@ -11,6 +11,7 @@ import {
   Select,
   MenuItem,
   Snackbar,
+  Typography,
 } from "@material-ui/core";
 import {
   MuiPickersUtilsProvider,
@@ -152,7 +153,9 @@ const NewBook = () => {
       };
     }
 
-    if (!form.fields.title.match(/^[0-9a-zA-ZÀ-ÿ.,;\u00f1\u00d1\s]{4,84}$/)) {
+    if (
+      !form.fields.title.match(/^[0-9a-zA-ZÀ-ÿ.,;«»"\u00f1\u00d1\s]{4,84}$/)
+    ) {
       finalObject.title = {
         isError: true,
         msg: "El título debe tener más de 4 y menos de 84 caracteres",
@@ -164,7 +167,9 @@ const NewBook = () => {
       };
     }
 
-    if (!form.fields.author.match(/^[0-9a-zA-ZÀ-ÿ.,;\u00f1\u00d1\s]{4,44}$/)) {
+    if (
+      !form.fields.author.match(/^[0-9a-zA-ZÀ-ÿ.,;«»"\u00f1\u00d1\s]{4,44}$/)
+    ) {
       finalObject.author = {
         isError: true,
         msg: "El autor debe tener más de 4 y menos de 44 caracteres",
@@ -176,7 +181,9 @@ const NewBook = () => {
       };
     }
 
-    if (!form.fields.editor.match(/^[0-9a-zA-ZÀ-ÿ.,;\u00f1\u00d1\s]{4,44}$/)) {
+    if (
+      !form.fields.editor.match(/^[0-9a-zA-ZÀ-ÿ.,;«»"\u00f1\u00d1\s]{4,44}$/)
+    ) {
       finalObject.editor = {
         isError: true,
         msg: "La editorial debe tener más de 4 y menos de 44 caracteres",
@@ -203,7 +210,7 @@ const NewBook = () => {
     if (
       !form.fields.synopsis
         .toString()
-        .match(/^[0-9a-zA-ZÀ-ÿ.,;\u00f1\u00d1\s]{4,184}$/)
+        .match(/^[0-9a-zA-ZÀ-ÿ.,;«»"\u00f1\u00d1\s]{4,184}$/)
     ) {
       finalObject.synopsis = {
         isError: true,
@@ -338,6 +345,11 @@ const NewBook = () => {
         <Paper className={classes.paper} elevation={3}>
           <form onSubmit={handleValidation} noValidate>
             <Grid container justify="center" direction="column" spacing={2}>
+              <Grid item>
+                <Typography variant="h5" component="h2" noWrap align="center">
+                  Crear nuevo
+                </Typography>
+              </Grid>
               <Grid item>
                 <TextField
                   name="isbn"
