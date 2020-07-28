@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "App de biblioteca",
+  "name": "Aplicación de biblioteca para la materia de Gestión de la Calidad del Software",
   "icons": [
     {
       "src": "favicon.ico",
